@@ -1,83 +1,83 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import Link from "next/link"
-import { useTheme } from "next-themes"
-import { useAuth } from "@/context/auth-context"
-import { useCart } from "@/context/cart-context"
-import { useToast } from "@/hooks/use-toast"
-import { Search, ShoppingCart, User, MenuIcon, Sun, Moon } from "lucide-react"
-import SearchForm from "./search-form"
-import ShoppingCartPanel from "./shopping-cart-panel"
-import UserPanel from "./user-panel"
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { useTheme } from "next-themes";
+import { useAuth } from "@/context/auth-context";
+import { useCart } from "@/context/cart-context";
+import { useToast } from "@/hooks/use-toast";
+import { Search, ShoppingCart, User, MenuIcon, Sun, Moon } from "lucide-react";
+import SearchForm from "./search-form";
+import ShoppingCartPanel from "./shopping-cart-panel";
+import UserPanel from "./user-panel";
 
 export default function Navbar() {
-  const { theme, setTheme } = useTheme()
-  const { user } = useAuth()
-  const { cart } = useCart()
-  const { toast } = useToast()
+  const { theme, setTheme } = useTheme();
+  const { user } = useAuth();
+  const { cart } = useCart();
+  const { toast } = useToast();
 
-  const [isNavbarFixed, setIsNavbarFixed] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [isCartOpen, setIsCartOpen] = useState(false)
-  const [isUserPanelOpen, setIsUserPanelOpen] = useState(false)
-  const [showRegisterForm, setShowRegisterForm] = useState(false)
-  const [mounted, setMounted] = useState(false)
+  const [isNavbarFixed, setIsNavbarFixed] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
+  const [showRegisterForm, setShowRegisterForm] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const navbarRef = useRef<HTMLElement>(null)
+  const navbarRef = useRef<HTMLElement>(null);
 
   // Handle theme mounting to prevent hydration mismatch
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   // Handle scroll for fixed navbar
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
-        setIsNavbarFixed(true)
+        setIsNavbarFixed(true);
       } else {
-        setIsNavbarFixed(false)
+        setIsNavbarFixed(false);
       }
-    }
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Handle click outside to close menus
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (navbarRef.current && !navbarRef.current.contains(e.target as Node)) {
-        setIsMenuOpen(false)
-        setIsSearchOpen(false)
-        setIsCartOpen(false)
-        setIsUserPanelOpen(false)
+        setIsMenuOpen(false);
+        setIsSearchOpen(false);
+        setIsCartOpen(false);
+        setIsUserPanelOpen(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark")
-  }
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-    setIsSearchOpen(false)
-    setIsCartOpen(false)
-    setIsUserPanelOpen(false)
-  }
+    setIsMenuOpen(!isMenuOpen);
+    setIsSearchOpen(false);
+    setIsCartOpen(false);
+    setIsUserPanelOpen(false);
+  };
 
   const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen)
-    setIsMenuOpen(false)
-    setIsCartOpen(false)
-    setIsUserPanelOpen(false)
-  }
+    setIsSearchOpen(!isSearchOpen);
+    setIsMenuOpen(false);
+    setIsCartOpen(false);
+    setIsUserPanelOpen(false);
+  };
 
   const toggleCart = () => {
     if (!user) {
@@ -85,25 +85,25 @@ export default function Navbar() {
         title: "Login Required",
         description: "Please login to view your cart",
         variant: "destructive",
-      })
-      setIsUserPanelOpen(true)
-      return
+      });
+      setIsUserPanelOpen(true);
+      return;
     }
 
-    setIsCartOpen(!isCartOpen)
-    setIsMenuOpen(false)
-    setIsSearchOpen(false)
-    setIsUserPanelOpen(false)
-  }
+    setIsCartOpen(!isCartOpen);
+    setIsMenuOpen(false);
+    setIsSearchOpen(false);
+    setIsUserPanelOpen(false);
+  };
 
   const toggleUserPanel = () => {
-    setIsUserPanelOpen(!isUserPanelOpen)
-    setIsMenuOpen(false)
-    setIsSearchOpen(false)
-    setIsCartOpen(false)
-  }
+    setIsUserPanelOpen(!isUserPanelOpen);
+    setIsMenuOpen(false);
+    setIsSearchOpen(false);
+    setIsCartOpen(false);
+  };
 
-  const totalItems = cart.reduce((total, item) => total + item.quantity, 0)
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <nav
@@ -216,5 +216,5 @@ export default function Navbar() {
         />
       </div>
     </nav>
-  )
+  );
 }
